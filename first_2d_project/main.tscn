@@ -1,8 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://6vcun1vagk1"]
+[gd_scene load_steps=8 format=3 uid="uid://6vcun1vagk1"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_8xajr"]
 [ext_resource type="PackedScene" uid="uid://ct4yjq7ea8si2" path="res://mob.tscn" id="2_xqohh"]
 [ext_resource type="PackedScene" uid="uid://bpa5v1yctukl6" path="res://player.tscn" id="2_ybrvx"]
+[ext_resource type="PackedScene" uid="uid://daix2dvbamjr8" path="res://hud.tscn" id="4_553oj"]
+[ext_resource type="AudioStream" uid="uid://rfgtlhlai7my" path="res://assets/art/House In a Forest Loop.ogg" id="5_8uy20"]
+[ext_resource type="AudioStream" uid="uid://p7wfw2d7h4sc" path="res://assets/art/gameover.wav" id="6_aug6r"]
 
 [sub_resource type="Curve2D" id="Curve2D_8ory1"]
 _data = {
@@ -13,6 +16,14 @@ point_count = 6
 [node name="Main" type="Node"]
 script = ExtResource("1_8xajr")
 mob_scene = ExtResource("2_xqohh")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.482353, 0.643137, 0.866667, 1)
 
 [node name="Player" parent="." instance=ExtResource("2_ybrvx")]
 position = Vector2(43, 41)
@@ -35,7 +46,16 @@ curve = SubResource("Curve2D_8ory1")
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 position = Vector2(-1, 0)
 
-[connection signal="hit" from="Player" to="." method="_on_player_hit"]
+[node name="HUD" parent="." instance=ExtResource("4_553oj")]
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_8uy20")
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_aug6r")
+
+[connection signal="hit" from="Player" to="." method="game_over"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="start_game" from="HUD" to="." method="new_game"]
