@@ -19,6 +19,11 @@ config/icon="res://assets/icon.png"
 
 buses/default_bus_layout="res://assets/default_bus_layout.tres"
 
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=540
+
 [dotnet]
 
 project/assembly_name="Squash the Creeps (3D)"
