@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://bva2qp6tosbx4"]
+
+[ext_resource type="Script" uid="uid://b14ao6lbe8j37" path="res://scripts/main.gd" id="1_8gbba"]
+[ext_resource type="PackedScene" uid="uid://87hppduqcb1m" path="res://Scenes/player.tscn" id="1_jjgbg"]
+[ext_resource type="Texture2D" uid="uid://d10mov61ukr7d" path="res://assets/Background/Background2.png" id="2_bo1nx"]
+[ext_resource type="Script" uid="uid://c5s8l2w835ooh" path="res://scripts/death_zone.gd" id="4_jjvhh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bo1nx"]
+size = Vector2(512, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8gbba"]
+size = Vector2(512, 24)
+
+[node name="Main" type="Node"]
+script = ExtResource("1_8gbba")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(256, 256)
+scale = Vector2(2, 2)
+texture = ExtResource("2_bo1nx")
+
+[node name="Player" parent="." instance=ExtResource("1_jjgbg")]
+position = Vector2(64, 216)
+
+[node name="DeathZone" type="Area2D" parent="." groups=["death"]]
+script = ExtResource("4_jjvhh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZone" groups=["death"]]
+position = Vector2(256, 528)
+shape = SubResource("RectangleShape2D_bo1nx")
+
+[node name="Top" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Top"]
+position = Vector2(256, -12)
+shape = SubResource("RectangleShape2D_8gbba")
+
+[node name="PipeSpawnerMarker" type="Marker2D" parent="."]
+position = Vector2(512, 304)
+
+[node name="PipeDeathMarker" type="Marker2D" parent="."]
+position = Vector2(-100, 304)
+
+[node name="PipeSpawner" type="Timer" parent="."]
+autostart = true
+
+[connection signal="body_entered" from="DeathZone" to="DeathZone" method="_on_body_entered"]
+[connection signal="timeout" from="PipeSpawner" to="." method="_on_pipe_spawner_timeout"]
