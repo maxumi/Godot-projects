@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=4 uid="uid://c58ui2oy5lr8f"]
+[gd_scene load_steps=9 format=4 uid="uid://c58ui2oy5lr8f"]
 
 [ext_resource type="Script" uid="uid://mghtct4oyjhe" path="res://scripts/pipes.gd" id="1_7ktcp"]
 [ext_resource type="Texture2D" uid="uid://ck1lw2v65ye0d" path="res://assets/Tiles/Style 1/PipeStyle1.png" id="2_7ktcp"]
+[ext_resource type="AudioStream" uid="uid://c6d0iwnvgwb4f" path="res://assets/Sounds/Point.mp3" id="3_ws3sl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ws3sl"]
 texture = ExtResource("2_7ktcp")
@@ -95,6 +96,9 @@ size = Vector2(32, 400)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ws3sl"]
 size = Vector2(32, 400)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_7ktcp"]
+radius = 40.0
+
 [node name="Pipe" type="Node2D"]
 script = ExtResource("1_7ktcp")
 
@@ -111,3 +115,14 @@ shape = SubResource("RectangleShape2D_7ktcp")
 [node name="Bottom" type="CollisionShape2D" parent="PipeParts"]
 position = Vector2(16, 200)
 shape = SubResource("RectangleShape2D_ws3sl")
+
+[node name="ScoreArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScoreArea"]
+position = Vector2(16, -40)
+shape = SubResource("CircleShape2D_7ktcp")
+
+[node name="ScoreSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_ws3sl")
+
+[connection signal="body_entered" from="ScoreArea" to="." method="_on_score_area_body_entered"]
