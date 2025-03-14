@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwcgfstsckbtx"]
+
+[ext_resource type="Script" uid="uid://cspoljifj84nb" path="res://scripts/obstacle.gd" id="1_mih1t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5243l"]
+size = Vector2(512, 104)
+
+[node name="ObstacleSimple" type="AnimatableBody2D"]
+script = ExtResource("1_mih1t")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 512.0
+offset_bottom = 104.0
+color = Color(1, 0, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(256, 52)
+shape = SubResource("RectangleShape2D_5243l")
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+offset_top = 544.0
+offset_right = 512.0
+offset_bottom = 648.0
+color = Color(1, 0, 0, 1)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(256, 596)
+shape = SubResource("RectangleShape2D_5243l")

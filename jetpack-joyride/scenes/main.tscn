@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=3 uid="uid://2vtd76tfpmsy"]
+
+[ext_resource type="PackedScene" uid="uid://ciw3garjj01jw" path="res://scenes/player.tscn" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://8npcva2g0myy" path="res://scripts/main.gd" id="1_sugp2"]
+[ext_resource type="PackedScene" uid="uid://c6f3tppklip3x" path="res://scenes/obstacle_simple.tscn" id="2_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://cwcgfstsckbtx" path="res://scenes/obstacle_medium.tscn" id="3_jyhfs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o5qli"]
+size = Vector2(1158.5, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sugp2"]
+size = Vector2(60, 652)
+
+[node name="Main" type="Node"]
+script = ExtResource("1_sugp2")
+obstacle_scene_a = ExtResource("2_0wfyh")
+obstacle_scene_b = ExtResource("3_jyhfs")
+
+[node name="Player" parent="." instance=ExtResource("1_o5qli")]
+position = Vector2(245, 122)
+
+[node name="Top" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Top"]
+position = Vector2(579.25, -8)
+shape = SubResource("RectangleShape2D_o5qli")
+
+[node name="Bottom" type="StaticBody2D" parent="."]
+position = Vector2(0, 664)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bottom"]
+position = Vector2(569.5, 8)
+shape = SubResource("RectangleShape2D_o5qli")
+
+[node name="DeathZone" type="Area2D" parent="."]
+position = Vector2(-112, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZone"]
+position = Vector2(80, 312)
+shape = SubResource("RectangleShape2D_sugp2")
+
+[node name="DespawnZone" type="Area2D" parent="."]
+position = Vector2(-224, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DespawnZone"]
+position = Vector2(-320, 312)
+shape = SubResource("RectangleShape2D_sugp2")
+
+[node name="ObstacleTimer" type="Timer" parent="."]
+wait_time = 2.5
+autostart = true
+
+[node name="Obstacles" type="Node2D" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="."]
+texture_filter = 1
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Score: 0"
+
+[connection signal="body_entered" from="DeathZone" to="." method="_on_death_zone_body_entered"]
+[connection signal="body_entered" from="DespawnZone" to="." method="_on_despawn_zone_body_entered"]
+[connection signal="timeout" from="ObstacleTimer" to="." method="_on_obstacle_timer_timeout"]
